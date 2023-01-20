@@ -36,6 +36,7 @@ def get_word_count(plataforma,keyword):
     count = words['title'].value_counts().sum()
     contador= count
     
+    
     return f'En la plataforma {plataforma} hay {contador} películas con la palabra {keyword} en el título'
 
 
@@ -49,6 +50,7 @@ def score_by_year(plataforma, year, puntaje):
     anio = df[(df['release_year'] == year) & (df['plataforma']== plataforma) & (df['score']==puntaje) & (df['type'] == 'movie')]
     cantidad = anio['title'].value_counts().sum()
     amount = cantidad
+    
     return f'En el año {year} hubo {amount} películas con un puntaje mayor a {puntaje} en {plataforma}'
 
 # La segunda película con mayor score para una plataforma determinada, según el orden alfabético de los títulos.
@@ -60,18 +62,19 @@ def second_score(plataforma):
     titulo = orden[['score','title']].nlargest(2, 'score').iloc[1]
     respuesta = titulo['title']
     ultima_respuesta = respuesta
+   
     
     return f'La segunda película con mayor score en {plataforma}, según el orden alfabético de los títulos es {ultima_respuesta}'
-
 
 # Película que más duró según año, plataforma y tipo de duración
 
 @app.get('/longest_movie/{year}/{plataforma}/{Type}')
 def longest_movie(year, plataforma, duration_type):
     longest = df[(df['plataforma'] == plataforma) & (df['release_year'] == year) & (df['duration_type'] == duration_type)]
-    pelicula_larga = longest[['duration_int', 'title']].nlargest(1)
+    pelicula_larga = longest[['duration_int', 'title']].nlargest(1, 'duration_int')
     answer = pelicula_larga['title']
     respuesta_final = answer
+   
     return f'La película de mayor duración del año {year} en la plataforma {plataforma} fue {respuesta_final}'
 
 # Cantidad de series y películas por rating
@@ -80,4 +83,5 @@ def amount_by_rating(rating):
     cantidad = df[(df['rating'] == rating)]
     amount = cantidad['type'].value_counts().sum()
     total = amount
+    
     return f'La cantidad de series y películas según el rating {rating} es {total}'
