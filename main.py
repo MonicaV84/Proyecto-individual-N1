@@ -68,7 +68,7 @@ def second_score(plataforma):
 
 # Película que más duró según año, plataforma y tipo de duración
 
-@app.get('/longest_movie/{year}/{plataforma}/{Type}')
+@app.get('/longest_movie/{year}/{plataforma}/{type}')
 def longest_movie(year, plataforma, duration_type):
     longest = df[(df['plataforma'] == plataforma) & (df['release_year'] == year) & (df['duration_type'] == duration_type)]
     pelicula_larga = longest[['duration_int', 'title']].nlargest(1, 'duration_int').iloc[0]
