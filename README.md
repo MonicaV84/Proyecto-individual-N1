@@ -1,5 +1,5 @@
 # Proyecto-individual-N1
 
-Mi principal objetivo con este proyecto era ponerme a prueba a mi misma. 
-En este repositorio se encuentra el código de mi proyecto.
-Se realizó una limpieza de los datos proporcionados y se devuelven las peticiones realizadas. Lamentablemente, fue imposible realizar el deploy del proyecto.
+Realicé la limpieza de los datos con Pandas, tal como se detalla en el archivo data.py.
+Hice la api utilizando fastAPI, una plataforma que permite la realización de apis en forma sencilla y gratuita.
+Finalmente, hice el deployment a través de la plataforma Deta.
