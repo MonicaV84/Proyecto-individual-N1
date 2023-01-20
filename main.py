@@ -3,7 +3,6 @@ from fastapi.responses import HTMLResponse, StreamingResponse
 from deta import Deta
 from data import df_total_final as df
 import pandas as pd
-
 import requests
 
 app = FastAPI()
@@ -28,7 +27,7 @@ def upload_img(file: UploadFile = File(...)):
 
     # Cantidad de veces que aparece una keyword en el título de peliculas/series, por plataforma
 
-@app.get("/get_word_count/{plataforma}/{keyword}", response_class=StreamingResponse)
+@app.get("/get_word_count/{plataforma}/{keyword}")
 def get_word_count(plataforma,keyword): 
     df_plat = df[(df['plataforma'] == plataforma)]
     word = df_plat['title'].str.contains(keyword)
@@ -62,22 +61,26 @@ def second_score(plataforma):
     titulo = orden[['score','title']].nlargest(2, 'score').iloc[1]
     respuesta = titulo['title']
     ultima_respuesta = respuesta
-   
+    
     
     return f'La segunda película con mayor score en {plataforma}, según el orden alfabético de los títulos es {ultima_respuesta}'
+
 
 # Película que más duró según año, plataforma y tipo de duración
 
 @app.get('/longest_movie/{year}/{plataforma}/{Type}')
 def longest_movie(year, plataforma, duration_type):
     longest = df[(df['plataforma'] == plataforma) & (df['release_year'] == year) & (df['duration_type'] == duration_type)]
-    pelicula_larga = longest[['duration_int', 'title']].nlargest(1, 'duration_int')
+    pelicula_larga = longest[['duration_int', 'title']].nlargest(1, 'duration_int').iloc[0]
+    
     answer = pelicula_larga['title']
     respuesta_final = answer
-   
+    
+    
     return f'La película de mayor duración del año {year} en la plataforma {plataforma} fue {respuesta_final}'
 
 # Cantidad de series y películas por rating
+
 @app.get('/amount_by_rating/{rating}')
 def amount_by_rating(rating):
     cantidad = df[(df['rating'] == rating)]
